@@ -3,7 +3,7 @@
 """
 Created on Fri Feb 15 23:41:47 2019
 
-@author: HKÁ, AES og MBH
+@authors: HKÁ, AES og MBH
 """
 import numpy as np
 import numpy.linalg as lin
@@ -53,6 +53,27 @@ def drawf():
     plt.show()
     return
 
+def finnaBil():
+    x = np.linspace(-pi, pi, 10000)
+    y = f(x)
+    endaPunktarBila = []
+    formerki = np.sign(y[0])
+    for k in xrange(len(x)):
+        if(np.sign(y[k]) != formerki):
+            endaPunktarBila.append(x[k-1])
+            endaPunktarBila.append(x[k])
+            formerki = np.sign(y[k])
+    return endaPunktarBila
+
+def Secant(end1,end2,tol):
+    x = end2
+    x1 = end2
+    x0 = end1
+    while abs(f(x)) > tol:
+        x = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+        x0 = x1
+        x1 = x
+    return x
 
 def drawStewartPlatform():
      x_number_list = np.array([0, x1, x2, x, x+L2*cos(theta+gamma), x+L3*cos(theta)])
@@ -112,3 +133,7 @@ ax.set_xlabel('x-points')
 ax.set_ylabel('y-points')
 ax.set_title('Simple XY point plot')
 fig.show()
+bil = finnaBil()
+print(bil)
+print(Secant(bil[0], bil[1], 1e-10))
+print(Secant(bil[2], bil[3], 1e-10))
