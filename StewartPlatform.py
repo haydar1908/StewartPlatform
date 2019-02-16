@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 from numpy import sin, cos, pi, sqrt
 
 
+"""
+The following function finds the value of f given theta.
+"""
 def f(theta):
     A2 = L3*cos(theta)-x1
     B2 = L3*sin(theta)
@@ -25,7 +28,9 @@ def f(theta):
 
     return N1**2 + N2**2 - (p1**2)*(D**2)
 
-
+"""
+The following function finds the corresponding value of x and y given theta.
+"""
 def xy(theta):
     A2 = L3*cos(theta)-x1
     B2 = L3*sin(theta)
@@ -42,7 +47,9 @@ def xy(theta):
 
     return x,y
 
-
+"""
+The following function draws the function f.
+"""
 def drawf():
     x = np.linspace(-pi, pi, 1000)
     y = f(x)
@@ -53,6 +60,9 @@ def drawf():
     plt.show()
     return
 
+"""
+The following function finds the neighbourhoods of roots of f
+"""
 def finnaBil():
     x = np.linspace(-pi, pi, 10000)
     y = f(x)
@@ -65,6 +75,9 @@ def finnaBil():
             formerki = np.sign(y[k])
     return endaPunktarBila
 
+"""
+The following function finds the roots of f by using the secant method.
+"""
 def Secant(end1,end2,tol):
     x = end2
     x1 = end2
@@ -75,6 +88,9 @@ def Secant(end1,end2,tol):
         x1 = x
     return x
 
+"""
+The following function draws the corresponding StewartPlatform
+"""
 def drawStewartPlatform():
      x_number_list = np.array([0, x1, x2, x, x+L2*cos(theta+gamma), x+L3*cos(theta)])
      y_number_list = np.array([0, 0, y2, y, y+L2*sin(theta+gamma), y+L3*sin(theta)])
