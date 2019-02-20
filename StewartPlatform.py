@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 15 23:41:47 2019
-
 @authors: HKÁ, AES og MBH
 """
+
 import numpy as np
 import numpy.linalg as lin
 import matplotlib.pyplot as plt
@@ -29,7 +28,7 @@ def f(theta):
     return N1**2 + N2**2 - (p1**2)*(D**2)
 
 """
-The following function finds the corresponding value of x and y given theta.
+The following function finds the corresponding values of x and y given theta.
 """
 def xy(theta):
     A2 = L3*cos(theta)-x1
@@ -61,32 +60,84 @@ def drawf():
     return
 
 """
-The following function finds the neighbourhoods of roots of f
+The following function finds the end points of the intervals which contain the roots of f.
 """
-def finnaBil():
+def findIntervals():
     x = np.linspace(-pi, pi, 10000)
     y = f(x)
-    endaPunktarBila = []
-    formerki = np.sign(y[0])
+    endPoints = []
+    fSign = np.sign(y[0])
     for k in xrange(len(x)):
-        if(np.sign(y[k]) != formerki):
-            endaPunktarBila.append(x[k-1])
-            endaPunktarBila.append(x[k])
-            formerki = np.sign(y[k])
-    return endaPunktarBila
+        if(np.sign(y[k]) != fSign):
+            endPoints.append(x[k-1])
+            endPoints.append(x[k])
+            fSign = np.sign(y[k])
+    return endPoints
 
 """
-The following function finds the roots of f by using the secant method.
+The following function finds the number of roots of the function f given
+the vector of endpoints found by the method findIntervals.
 """
-def Secant(end1,end2,tol):
-    x = end2
-    x1 = end2
-    x0 = end1
+def numRoots(endPoints):
+    return len(endPoints)/2
+
+
+"""
+Given an interval with endpoints a and b the following function finds
+the root of f contained in that interval by using the secant method.
+"""
+def secant(a,b,tol):
+    x = a
+    x1 = b
+    x0 = a
     while abs(f(x)) > tol:
         x = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
         x0 = x1
         x1 = x
     return x
+
+"""
+Given an interval with endpoints a and b the following function finds
+the root of f contained in that interval by using binary search.
+"""
+def binary(a,b,tol):
+    while (b-a)/2 > tol:
+        c = (a+b)/2
+        if f(c) = 0:
+            return c
+        if f(a)*f(c) < 0:
+            b = c
+        else:
+            a = c
+    return c
+
+"""
+The following function verifies if the calculated values
+of (x,y,theta) correspond to the strut lengths (p1,p2,p3) up to a tolerance tol.
+"""
+def verifySolution(tol):
+    bool = True
+    A2 = L3*cos(theta)-x1
+    B2 = L3*sin(theta)
+    A3 = L2*(cos(theta)*cos(gamma) - sin(theta)*sin(gamma))-x2
+    B3 = L2*(cos(theta)*sin(gamma) + sin(theta)*cos(gamma))-y2
+    if abs(p1^2-x^2-y^2) > tol:
+        bool = False
+    if abs(p2^2-(x+A2)^2-(y+B2)^2) > tol:
+        bool = False
+    if abs(p3^2 - (x+A3)^2-(y+B3)^2 > tol:
+        bool = False
+    return bool
+
+"""
+The following function gives the endpoints of the intervals of p2
+for which there are 0, 2, 4 and 6 poses respectivly.
+"""
+def findp2Intervals():
+    intervals = []
+
+
+    return intervals
 
 """
 The following function draws the corresponding StewartPlatform
