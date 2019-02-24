@@ -56,6 +56,9 @@ def drawf():
     plt.plot(x, y, label='f')
     plt.plot(x, y0, label='0')
     plt.legend()
+    plt.title("Graf $f$ sem fall af $\\theta$. ")
+    plt.xlabel("$\\theta$")
+    plt.ylabel("$f$")
     plt.show()
     return
 
@@ -70,6 +73,9 @@ def drawfLogarithmically():
     plt.plot(x, t, label='f')
     plt.plot(x, y0, label='0')
     plt.legend()
+    plt.title("Graf $\\frac{f}{|f|}\log(1+10^{-3}f)$ sem fall af $\\theta$. ")
+    plt.xlabel("$\\theta$")
+    plt.ylabel("$f$")
     plt.show()
     return
 
@@ -84,11 +90,10 @@ def drawStewart(theta):
      X = np.array([[0,0], [x1,0], [x2, y2], [x, y], [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)], [x+L3*cos(theta), y+L3*sin(theta)]])
      Y = ['blue', 'blue', 'blue', 'red', 'red', 'red']
      plt.figure()
-
-     t1 = plt.Polygon(X[3:6,:], color='pink')
+     t1 = plt.Polygon(X[3:6,:], zorder=1, color='pink')
      plt.gca().add_patch(t1)
 
-     plt.scatter(X[:, 0], X[:, 1], s = 10, color = Y[:])
+     plt.scatter(X[:, 0], X[:, 1], s = 10, zorder=2, color = Y[:])
 
      plt.plot([0,x],[0,y], color='blue')
      plt.plot([x1,x+L3*cos(theta)],[0,y+L3*sin(theta)],color='blue')
@@ -97,6 +102,10 @@ def drawStewart(theta):
      plt.plot([x+L3*cos(theta),x],[y+L3*sin(theta),y], color='red')
      plt.plot([x+L3*cos(theta),x+L2*cos(theta+gamma)],[y+L3*sin(theta),y+L2*sin(theta+gamma)], color='red')
      plt.plot([x+L2*cos(theta+gamma),x],[y+L2*sin(theta+gamma),y], color='red')
+
+     plt.title("Stewart verkvangurinn")
+     plt.xlabel("x-ás")
+     plt.ylabel("y-ás")
      plt.show()
 
      return
@@ -203,7 +212,8 @@ def findp2Intervals():
             intervals.append([p[i-1], p[i]])
             currVal = y[i]
     plt.plot(p,y)
-    
+    plt.xlabel("$p_2$")
+    plt.ylabel("Fjöldi róta")
     plt.show()
     return intervals
 
