@@ -159,6 +159,20 @@ def binary(a,b,tol):
     return c
 
 """
+The following function finds the roots of f up to a tolerance tol
+"""
+def fRoots(tol):
+    x = np.linspace(-pi,pi, 1000)
+    y = f(x)
+    roots = []
+    fSign = sign(y[0])
+    for k in range(len(x)):
+        if sign(y[k]) != fSign:
+            roots.append(binary(x[k-1],x[k],tol))
+            fSign = sign(y[k])
+    return roots
+
+"""
 The following function verifies if the calculated values
 of (x,y,theta) correspond to the strut lengths (p1,p2,p3) up to a tolerance tol.
 """
@@ -186,35 +200,6 @@ def findp2Intervals():
 
     return intervals
 
-"""
-The following function draws the corresponding StewartPlatform
-"""
-def drawStewartPlatform():
-     x_number_list = np.array([0, x1, x2, x, x+L2*cos(theta+gamma), x+L3*cos(theta)])
-     y_number_list = np.array([0, 0, y2, y, y+L2*sin(theta+gamma), y+L3*sin(theta)])
-     plt.plot(x_number_list, y_number_list, s=1000)
-     plt.show()
-     return
-
-def drawStewart(theta):
-     gamma=np.pi/2
-     x,y = xy(theta)
-     X = np.array([[0,0], [x1,0], [x2, y2], [x, y], [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)], [x+L3*cos(theta), y+L3*sin(theta)]])
-     Y = ['blue', 'blue', 'blue', 'red', 'red', 'red']
-     plt.figure()
-     t1 = plt.Polygon(X[3:6,:], color='pink')
-     plt.scatter(X[:, 0], X[:, 1], s = 10, color = Y[:])
-     plt.gca().add_patch(t1)
-
-     #lögum línuvigurinn til að teikna rétt
-
-
-     #plt.plot(X)
-     plt.show()
-     #plt.plot(x_number_list, y_number_list, 'ro')
-
-     return
-
 L1=2
 L2=sqrt(2)
 L3=sqrt(2)
@@ -228,24 +213,11 @@ p1=sqrt(5)
 p2=sqrt(5)
 p3=sqrt(5)
 
-print(L1)
-print(p1)
-print(f(-pi/4))
-print(f(0))
-print(f(pi))
+print(fRoots(0.5e-10))
 drawf()
 
 drawStewart(theta)
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-x_points = range(9)
-y_points = range(9)
-p = ax.plot(x_points, y_points, 'b')
-ax.set_xlabel('x-points')
-ax.set_ylabel('y-points')
-ax.set_title('Simple XY point plot')
-fig.show()
 bil = findIntervals()
 print(bil)
 print(secant(bil[0], bil[1], 1e-10))
