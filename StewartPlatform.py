@@ -74,31 +74,26 @@ def drawfZeroes():
     return
 
 """
-The following function draws a diagram of the placement of the Stewart
+The following function draws a diagram of the Stewart platform
 for a given value of theta.
 """
 def drawStewart(theta):
      gamma=np.pi/2
      x,y = xy(theta)
 
-     """ X stores the vertices of the Stewart platform while
-      Y stores the colors which will become vertices"""
      X = np.array([[0,0], [x1,0], [x2, y2], [x, y], [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)], [x+L3*cos(theta), y+L3*sin(theta)]])
      Y = ['blue', 'blue', 'blue', 'red', 'red', 'red']
      plt.figure()
 
-     """ We draw the platform in pink for clarity. """
      t1 = plt.Polygon(X[3:6,:], color='pink')
      plt.gca().add_patch(t1)
 
      plt.scatter(X[:, 0], X[:, 1], s = 10, color = Y[:])
 
-     """ We draw p1, p2 and p3. """
      plt.plot([0,x],[0,y], color='blue')
      plt.plot([x1,x+L3*cos(theta)],[0,y+L3*sin(theta)],color='blue')
      plt.plot([x2,x+L2*cos(theta+gamma)],[y2,y+L2*sin(theta+gamma)],color='blue')
 
-     """ We draw L1, L2 and L3 """
      plt.plot([x+L3*cos(theta),x],[y+L3*sin(theta),y], color='red')
      plt.plot([x+L3*cos(theta),x+L2*cos(theta+gamma)],[y+L3*sin(theta),y+L2*sin(theta+gamma)], color='red')
      plt.plot([x+L2*cos(theta+gamma),x],[y+L2*sin(theta+gamma),y], color='red')
