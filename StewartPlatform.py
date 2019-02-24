@@ -195,9 +195,10 @@ The following function gives the endpoints of the intervals of p2
 for which there are 0, 2, 4 and 6 poses respectivly.
 """
 def findp2Intervals():
-    p = np.linspace(0,14,100)
+    p = np.linspace(0,14,1000)
     y = np.zeros(len(p))
     for i in range(len(p)):
+        global p2
         p2 = p[i]
         y[i] = numRoots(findIntervals())
     plt.plot(p,y)
@@ -226,4 +227,19 @@ bil = findIntervals()
 print(bil)
 print(secant(bil[0], bil[1], 1e-10))
 print(secant(bil[2], bil[3], 1e-10))
+print(numRoots(findIntervals()))
+findp2Intervals()
+
+L1=3
+L2=3*sqrt(2)
+L3=3
+x1=5
+x2=0
+y2=6
+gamma=pi/4
+
+p1=5
+p2=5
+p3=3
+
 findp2Intervals()
