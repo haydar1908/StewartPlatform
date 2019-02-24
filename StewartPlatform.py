@@ -197,13 +197,18 @@ for which there are 0, 2, 4 and 6 poses respectivly.
 def findp2Intervals():
     p = np.linspace(0,14,1000)
     y = np.zeros(len(p))
+    intervals = []
+    currVal = 0
     for i in range(len(p)):
         global p2
         p2 = p[i]
         y[i] = numRoots(findIntervals())
+        if y[i] != currVal:
+            intervals.append([p[i-1], p[i]])
+            currVal = y[i]
     plt.plot(p,y)
     plt.show()
-    return
+    return intervals
 
 L1=2
 L2=sqrt(2)
@@ -242,4 +247,5 @@ p1=5
 p2=5
 p3=3
 
-findp2Intervals()
+intervalsp2 = findp2Intervals()
+print(intervalsp2)
