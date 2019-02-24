@@ -62,7 +62,7 @@ def drawf():
 """
 The following function draws a logarithmic version of the function f.
 """
-def drawfZeroes():
+def drawfLogarithmically():
     x = np.linspace(-pi, pi, 1000)
     y = f(x)
     t = sign(y)*log10(1+abs(y)/10**3)
@@ -171,17 +171,18 @@ def fRoots(tol):
 The following function verifies if the calculated values
 of (x,y,theta) correspond to the strut lengths (p1,p2,p3) up to a tolerance tol.
 """
-def verifySolution(tol):
+def verifySolution(theta, tol):
+    x,y = xy(theta)
     bool = True
     A2 = L3*cos(theta)-x1
     B2 = L3*sin(theta)
     A3 = L2*(cos(theta)*cos(gamma) - sin(theta)*sin(gamma))-x2
     B3 = L2*(cos(theta)*sin(gamma) + sin(theta)*cos(gamma))-y2
-    if abs(p1^2-x^2-y^2) > tol:
+    if abs(p1**2-x**2-y**2) > tol:
         bool = False
-    if abs(p2^2-(x+A2)^2-(y+B2)^2) > tol:
+    if abs(p2**2-(x+A2)**2-(y+B2)**2) > tol:
         bool = False
-    if abs(p3^2 - (x+A3)^2-(y+B3)^2) > tol:
+    if abs(p3**2 - (x+A3)**2-(y+B3)**2) > tol:
         bool = False
     return bool
 
@@ -190,7 +191,7 @@ The following function gives the endpoints of the intervals of p2
 for which there are 0, 2, 4 and 6 poses respectivly.
 """
 def findp2Intervals():
-    p = np.linspace(0,14,1000)
+    p = np.linspace(0,12,1000)
     y = np.zeros(len(p))
     intervals = []
     currVal = 0
@@ -202,8 +203,11 @@ def findp2Intervals():
             intervals.append([p[i-1], p[i]])
             currVal = y[i]
     plt.plot(p,y)
+    
     plt.show()
     return intervals
+
+"We start by solving the problem with the following parameters:"
 
 L1=2
 L2=sqrt(2)
@@ -212,23 +216,22 @@ x1=4
 x2=0
 y2=4
 gamma=pi/2
-theta=pi/4
+thetta=pi/4
 
 p1=sqrt(5)
 p2=sqrt(5)
 p3=sqrt(5)
 
-print(fRoots(0.5e-10))
+print(f(thetta))
+print(f(-thetta))
+
 drawf()
+drawfLogarithmically()
 
-drawStewart(theta)
+drawStewart(-thetta)
+drawStewart(thetta)
 
-bil = findIntervals()
-print(bil)
-print(secant(bil[0], bil[1], 1e-10))
-print(secant(bil[2], bil[3], 1e-10))
-print(numRoots(findIntervals()))
-findp2Intervals()
+"We then proceed by solving the problem with more complex paramters"
 
 L1=3
 L2=3*sqrt(2)
@@ -241,6 +244,32 @@ gamma=pi/4
 p1=5
 p2=5
 p3=3
+
+drawf()
+drawfLogarithmically()
+
+rootsF = fRoots(0.5e-10)
+print(rootsF)
+
+for theet in rootsF:
+    toler = 0.5e-8
+    if verifySolution(theet,toler):
+        print("Our approximation of theta = " + str(theet) + " was suffeciently good.")
+    drawStewart(theet)
+
+p2 = 7
+
+drawf()
+drawfLogarithmically()
+
+rootsF = fRoots(0.5e-10)
+print(rootsF)
+
+for theet in rootsF:
+    toler = 0.5e-8
+    if verifySolution(theet,toler):
+        print("Our approximation of theta = " + str(theet) + " was suffeciently good.")
+    drawStewart(theet)
 
 intervalsp2 = findp2Intervals()
 print(intervalsp2)
