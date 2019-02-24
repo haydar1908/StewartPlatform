@@ -110,7 +110,7 @@ def drawStewart(theta):
 The following function finds the end points of the intervals which contain the roots of f.
 """
 def findIntervals():
-    x = np.linspace(-pi, pi, 10000)
+    x = np.linspace(-pi, pi, 1000)
     y = f(x)
     endPoints = []
     fSign = sign(y[0])
@@ -195,10 +195,14 @@ The following function gives the endpoints of the intervals of p2
 for which there are 0, 2, 4 and 6 poses respectivly.
 """
 def findp2Intervals():
-    intervals = []
-
-
-    return intervals
+    p = np.linspace(0,14,100)
+    y = np.zeros(len(p))
+    for i in range(len(p)):
+        p2 = p[i]
+        y[i] = numRoots(findIntervals())
+    plt.plot(p,y)
+    plt.show()
+    return
 
 L1=2
 L2=sqrt(2)
@@ -222,3 +226,4 @@ bil = findIntervals()
 print(bil)
 print(secant(bil[0], bil[1], 1e-10))
 print(secant(bil[2], bil[3], 1e-10))
+findp2Intervals()
