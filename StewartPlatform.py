@@ -8,7 +8,7 @@ import numpy as np
 import numpy.linalg as lin
 import matplotlib.pyplot as plt
 
-from numpy import sin, cos, pi, sqrt
+from numpy import sin, cos, pi, sqrt, sign, log10
 
 
 """
@@ -60,18 +60,65 @@ def drawf():
     return
 
 """
+The following function draws a logarithmic version of the function f.
+"""
+def drawfZeroes():
+    x = np.linspace(-pi, pi, 1000)
+    y = f(x)
+    t = sign(y)*log10(1+abs(y)/10**3)
+    y0 = 0*x
+    plt.plot(x, t, label='f')
+    plt.plot(x, y0, label='0')
+    plt.legend()
+    plt.show()
+    return
+
+"""
+The following function draws a diagram of the placement of the Stewart
+for a given value of theta.
+"""
+def drawStewart(theta):
+     gamma=np.pi/2
+     x,y = xy(theta)
+
+     """ X stores the vertices of the Stewart platform while
+      Y stores the colors which will become vertices"""
+     X = np.array([[0,0], [x1,0], [x2, y2], [x, y], [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)], [x+L3*cos(theta), y+L3*sin(theta)]])
+     Y = ['blue', 'blue', 'blue', 'red', 'red', 'red']
+     plt.figure()
+
+     """ We draw the platform in pink for clarity. """
+     t1 = plt.Polygon(X[3:6,:], color='pink')
+     plt.gca().add_patch(t1)
+
+     plt.scatter(X[:, 0], X[:, 1], s = 10, color = Y[:])
+
+     """ We draw p1, p2 and p3. """
+     plt.plot([0,x],[0,y], color='blue')
+     plt.plot([x1,x+L3*cos(theta)],[0,y+L3*sin(theta)],color='blue')
+     plt.plot([x2,x+L2*cos(theta+gamma)],[y2,y+L2*sin(theta+gamma)],color='blue')
+
+     """ We draw L1, L2 and L3 """
+     plt.plot([x+L3*cos(theta),x],[y+L3*sin(theta),y], color='red')
+     plt.plot([x+L3*cos(theta),x+L2*cos(theta+gamma)],[y+L3*sin(theta),y+L2*sin(theta+gamma)], color='red')
+     plt.plot([x+L2*cos(theta+gamma),x],[y+L2*sin(theta+gamma),y], color='red')
+     plt.show()
+
+     return
+
+"""
 The following function finds the end points of the intervals which contain the roots of f.
 """
 def findIntervals():
     x = np.linspace(-pi, pi, 10000)
     y = f(x)
     endPoints = []
-    fSign = np.sign(y[0])
-    for k in xrange(len(x)):
-        if(np.sign(y[k]) != fSign):
+    fSign = sign(y[0])
+    for k in range(len(x)):
+        if(sign(y[k]) != fSign):
             endPoints.append(x[k-1])
             endPoints.append(x[k])
-            fSign = np.sign(y[k])
+            fSign = sign(y[k])
     return endPoints
 
 """
@@ -103,7 +150,7 @@ the root of f contained in that interval by using binary search.
 def binary(a,b,tol):
     while (b-a)/2 > tol:
         c = (a+b)/2
-        if f(c) = 0:
+        if f(c) == 0:
             return c
         if f(a)*f(c) < 0:
             b = c
@@ -125,7 +172,7 @@ def verifySolution(tol):
         bool = False
     if abs(p2^2-(x+A2)^2-(y+B2)^2) > tol:
         bool = False
-    if abs(p3^2 - (x+A3)^2-(y+B3)^2 > tol:
+    if abs(p3^2 - (x+A3)^2-(y+B3)^2) > tol:
         bool = False
     return bool
 
@@ -169,13 +216,13 @@ def drawStewart(theta):
      return
 
 L1=2
-L2=np.sqrt(2)
-L3=np.sqrt(2)
+L2=sqrt(2)
+L3=sqrt(2)
 x1=4
 x2=0
 y2=4
-gamma=np.pi/2
-theta=-pi/4
+gamma=pi/2
+theta=pi/4
 
 p1=sqrt(5)
 p2=sqrt(5)
@@ -183,11 +230,10 @@ p3=sqrt(5)
 
 print(L1)
 print(p1)
-print(f(-np.pi/4))
+print(f(-pi/4))
 print(f(0))
-print(f(np.pi))
+print(f(pi))
 drawf()
-#drawStewartPlatform()
 
 drawStewart(theta)
 
@@ -200,7 +246,7 @@ ax.set_xlabel('x-points')
 ax.set_ylabel('y-points')
 ax.set_title('Simple XY point plot')
 fig.show()
-bil = finnaBil()
+bil = findIntervals()
 print(bil)
-print(Secant(bil[0], bil[1], 1e-10))
-print(Secant(bil[2], bil[3], 1e-10))
+print(secant(bil[0], bil[1], 1e-10))
+print(secant(bil[2], bil[3], 1e-10))
