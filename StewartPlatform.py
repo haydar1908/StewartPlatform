@@ -84,8 +84,10 @@ The following function draws a diagram of the Stewart platform
 for a given value of theta.
 """
 def drawStewart(theta):
-     gamma=np.pi/2
      x,y = xy(theta)
+
+     C2 = [x+L3*cos(theta),y+L3*sin(theta)]
+     C3 = [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)]
 
      X = np.array([[0,0], [x1,0], [x2, y2], [x, y], [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)], [x+L3*cos(theta), y+L3*sin(theta)]])
      Y = ['blue', 'blue', 'blue', 'red', 'red', 'red']
@@ -93,15 +95,15 @@ def drawStewart(theta):
      t1 = plt.Polygon(X[3:6,:], zorder=1, color='pink')
      plt.gca().add_patch(t1)
 
-     plt.scatter(X[:, 0], X[:, 1], s = 10, zorder=2, color = Y[:])
+     plt.scatter(X[:, 0], X[:, 1], s = 10, zorder=4, color = Y[:])
 
-     plt.plot([0,x],[0,y], color='blue')
-     plt.plot([x1,x+L3*cos(theta)],[0,y+L3*sin(theta)],color='blue')
-     plt.plot([x2,x+L2*cos(theta+gamma)],[y2,y+L2*sin(theta+gamma)],color='blue')
+     plt.plot([x,C2[0]],[y,C2[1]], zorder=3, color='red')
+     plt.plot([x,C3[0]],[y,C3[1]], zorder=3, color='red')
+     plt.plot([C3[0],C2[0]],[C3[1],C2[1]], zorder=3, color='red')
 
-     plt.plot([x+L3*cos(theta),x],[y+L3*sin(theta),y], color='red')
-     plt.plot([x+L3*cos(theta),x+L2*cos(theta+gamma)],[y+L3*sin(theta),y+L2*sin(theta+gamma)], color='red')
-     plt.plot([x+L2*cos(theta+gamma),x],[y+L2*sin(theta+gamma),y], color='red')
+     plt.plot([x,0],[y,0], color='blue')
+     plt.plot([x1,C2[0]],[0,C2[1]], color='blue')
+     plt.plot([x2,C3[0]],[y2,C3[1]], color='blue')
 
      plt.title("Stewart verkvangurinn")
      plt.xlabel("x-ás")
@@ -132,21 +134,6 @@ the vector of endpoints found by the method findIntervals.
 def numRoots(endPoints):
     return len(endPoints)/2
 
-
-"""
-Given an interval with endpoints a and b the following function finds
-the root of f contained in that interval by using the secant method.
-"""
-def secant(a,b,tol):
-    x = a
-    x1 = b
-    x0 = a
-    while abs(f(x)) > tol:
-        x = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
-        x0 = x1
-        x1 = x
-    return x
-
 """
 Given an interval with endpoints a and b the following function finds
 the root of f contained in that interval by using binary search.
@@ -165,15 +152,11 @@ def binary(a,b,tol):
 """
 The following function finds the roots of f up to a tolerance tol
 """
-def fRoots(tol):
-    x = np.linspace(-pi,pi, 1000)
-    y = f(x)
-    roots = []
-    fSign = sign(y[0])
-    for k in range(len(x)):
-        if sign(y[k]) != fSign:
-            roots.append(binary(x[k-1],x[k],tol))
-            fSign = sign(y[k])
+def findRoots(tol):
+    ep = findIntervals()
+    roots=[]
+    for i in range(0,len(ep),2):
+        roots.append(binary(ep[i],ep[i+1],tol))
     return roots
 
 """
@@ -258,13 +241,13 @@ p3=3
 drawf()
 drawfLogarithmically()
 
-rootsF = fRoots(0.5e-10)
+rootsF = findRoots(0.5e-10)
 print(rootsF)
 
 for theet in rootsF:
     toler = 0.5e-8
     if verifySolution(theet,toler):
-        print("Our approximation of theta = " + str(theet) + " was suffeciently good.")
+        print("Our approximation of theta = " + str(theet) + " was sufficiently good.")
     drawStewart(theet)
 
 p2 = 7
@@ -272,14 +255,19 @@ p2 = 7
 drawf()
 drawfLogarithmically()
 
-rootsF = fRoots(0.5e-10)
+rootsF = findRoots(0.5e-10)
 print(rootsF)
 
 for theet in rootsF:
     toler = 0.5e-8
     if verifySolution(theet,toler):
-        print("Our approximation of theta = " + str(theet) + " was suffeciently good.")
+        print("Our approximation of theta = " + str(theet) + " was sufficiently good.")
     drawStewart(theet)
+
+p2=4
+
+drawf()
+drawfLogarithmically()
 
 intervalsp2 = findp2Intervals()
 print(intervalsp2)
