@@ -89,7 +89,7 @@ def drawStewart(theta):
      C2 = [x+L3*cos(theta),y+L3*sin(theta)]
      C3 = [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)]
 
-     X = np.array([[0,0], [x1,0], [x2, y2], [x, y], [x+L2*cos(theta+gamma), y+L2*sin(theta+gamma)], [x+L3*cos(theta), y+L3*sin(theta)]])
+     X = np.array([[0,0], [x1,0], [x2, y2], [x, y], C3, C2])
      Y = ['blue', 'blue', 'blue', 'red', 'red', 'red']
      plt.figure()
      t1 = plt.Polygon(X[3:6,:], zorder=1, color='pink')
